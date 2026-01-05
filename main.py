@@ -9,6 +9,7 @@ from google.genai import types
 def main():
     parser = argparse.ArgumentParser(description="Chatbot")
     parser.add_argument("user_prompt", type=str, help="User prompt")
+    parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
     args = parser.parse_args()
 
     load_dotenv()
@@ -21,9 +22,10 @@ def main():
     if resp is None or resp.usage_metadata is None:
         raise Excption("AI client failed to respond")
 
-    print(f"User prompt: {args.user_prompt}")
-    print(f"Prompt tokens: {resp.usage_metadata.prompt_token_count}")
-    print(f"Response tokens: {resp.usage_metadata.candidates_token_count}")
+    if args.verbose:
+        print(f"User prompt: {args.user_prompt}")
+        print(f"Prompt tokens: {resp.usage_metadata.prompt_token_count}")
+        print(f"Response tokens: {resp.usage_metadata.candidates_token_count}")
     print("Response")
     print(resp.text)
 
